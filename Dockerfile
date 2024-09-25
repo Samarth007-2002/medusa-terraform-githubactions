@@ -1,24 +1,35 @@
-# Use the official Node.js image as the base image
-FROM node:18-alpine
+# Stage 1: Build the application
+FROM node:16-alpine AS build
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Install project dependencies
+# Install dependencies
 RUN npm install
 
-# Copy all project files to the container
+# Copy the rest of the application
 COPY . .
 
-# Build the TypeScript code (ensure tsconfig.json is copied)
-RUN npm run build
+# Build the application if needed
+# RUN npm run build
 
-# Expose the port on which Medusa will run
+# Stage 2: Run the application
+FROM node:16-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install Medusa CLI globally again
+RUN npm install -g @medusajs/medusa-cli
+
+# Copy the built application from the build stage
+COPY --from=build /app .
+
+# Expose the port the app runs on
 EXPOSE 9000
 
-# Run the Medusa backend
-CMD ["npm", "run", "start"]
-
+# Run migrations and then start the application
+CMD medusa migrations run && npm run start
