@@ -31,7 +31,7 @@ const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
 const DATABASE_URL =
   process.env.DATABASE_URL || "YOUR DATABASE URL";
 
-const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+const REDIS_URL = process.env.REDIS_URL || "postgresql://medusa_owner:fz5Qx3cmbuNg@ep-wild-snow-a4lu3wxk.us-east-1.aws.neon.tech/medusa?sslmode=require";
 
 const plugins = [
   `medusa-fulfillment-manual`,
