@@ -3,8 +3,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - main
-      - task7
+  
 
 env:
   AWS_REGION: us-east-1  # Replace with your AWS region
